@@ -50,12 +50,18 @@ public class StrukturList {
 
     public void displayElement() {
         Node curNode = HEAD;
-        System.out.println("Elemen Node : ");
-        while (curNode != null) {
-            System.out.print(curNode.getData() + ", ");
-            curNode = curNode.getNext();
+        
+        if (isEmpty()) {
+            System.out.println("List Kosong");
+            return;
+            
+        } else {
+            System.out.print("Elemen Node : ");
         }
-        System.out.println();
+        while (curNode != null) {
+            System.out.print(curNode.getData() + " ");
+            curNode = curNode.getNext();
+        } 
     }
 
     public void removeHead() {
