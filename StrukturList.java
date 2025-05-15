@@ -50,8 +50,9 @@ public class StrukturList {
 
     public void displayElement() {
         Node curNode = HEAD;
+        System.out.println("Elemen Node : ");
         while (curNode != null) {
-            System.out.print(curNode.getData() + " ");
+            System.out.print(curNode.getData() + ", ");
             curNode = curNode.getNext();
         }
         System.out.println();
