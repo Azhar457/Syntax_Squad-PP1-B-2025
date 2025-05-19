@@ -1,8 +1,8 @@
 public class Node {
     int data;
-    Node lanjut;
+    Node next;
     Node(int data) {
         this.data = data;
-        this.lanjut = null;
+        this.next = null;
     }
 }
