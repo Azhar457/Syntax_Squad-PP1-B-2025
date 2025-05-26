@@ -1,7 +1,8 @@
 public class Node {
-    int data;
+    Antrian data;
     Node next;
-    Node(int data) {
+    
+    public Node(Antrian data) {
         this.data = data;
         this.next = null;
     }
