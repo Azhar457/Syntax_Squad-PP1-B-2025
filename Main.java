@@ -52,10 +52,6 @@ public class Main {
                     queue.tampilkanSemua();
                     break;
 
-                    System.out.println("2. Lihat Semua Antrian");
-
-                    
-
                 case 3:
                     Antrian ambil = queue.dequeue();
                     if (ambil != null) {

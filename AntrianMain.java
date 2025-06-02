@@ -46,22 +46,6 @@ public class AntrianMain {
         }
     }
 
-    public void tampilkanSemua() {
-        if (head == null) {
-            System.out.println("Antrian kosong.");
-            return;
-        }
-
-        Node current = head;
-        int i = 1;
-        while (current != null) {
-            System.out.println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota()
-                    + " - " + current.data.getLayanan());
-            current = current.next;
-            i++;
-        }
-    }
-
     public void cetakStruk(Antrian data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 
