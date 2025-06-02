@@ -56,7 +56,7 @@ public class Main {
                     Antrian ambil = queue.dequeue();
                     if (ambil != null) {
                         queue.cetakStruk(ambil);
-                        System.out.println("Pesanan berhasil diambil.");
+                        System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
                     }
                     break;
 

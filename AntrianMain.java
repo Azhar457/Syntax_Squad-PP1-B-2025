@@ -1,7 +1,8 @@
 import java.text.SimpleDateFormat;
+import java.io.*;
 
-public class AntrianMain { // a = b -> nilai a diset ke b
-    private Node head, tail;
+public class AntrianMain {
+    Node head, tail;
 
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
@@ -11,6 +12,7 @@ public class AntrianMain { // a = b -> nilai a diset ke b
             tail.next = newNode;
             tail = newNode;
         }
+        simpanKeFilePerLayanan(data);
         System.out.println("Data masuk ke antrian.");
     }
 
@@ -23,6 +25,8 @@ public class AntrianMain { // a = b -> nilai a diset ke b
         head = head.next;
         if (head == null)
             tail = null;
+        pindahKeCatatan(data);
+        hapusDariFileAntrian(data);
         return data;
     }
 
@@ -35,8 +39,8 @@ public class AntrianMain { // a = b -> nilai a diset ke b
         Node current = head;
         int i = 1;
         while (current != null) {
-            System.out
-                    .println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
+            System.out.println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota()
+                    + " - " + current.data.getLayanan());
             current = current.next;
             i++;
         }
@@ -46,7 +50,7 @@ public class AntrianMain { // a = b -> nilai a diset ke b
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 
         String layanan = data.getLayanan();
-        int hargaPerKg = layanan.equalsIgnoreCase("Express") ? 9000 : 7000;
+        int hargaPerKg = layanan.equalsIgnoreCase("Express") ? 9000 : 6000;
         double berat = data.getPelanggan().getBerat();
         int total = (int) (berat * hargaPerKg);
 
@@ -61,5 +65,58 @@ public class AntrianMain { // a = b -> nilai a diset ke b
         System.out.println("Total       : " + total);
         System.out.println("Status      : Belum Bayar");
         System.out.println("============================");
+    }
+
+    // Simpan ke file sesuai layanan
+    public void simpanKeFilePerLayanan(Antrian data) {
+        String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        try (FileWriter fw = new FileWriter(file, true)) {
+            fw.write(data.getNoNota() + ";" +
+                    data.getTglMasuk().getTime() + ";" +
+                    data.getTglSelesai().getTime() + ";" +
+                    data.getPelanggan().getNama() + ";" +
+                    data.getPelanggan().getBerat() + ";" +
+                    data.getLayanan() + "\n");
+        } catch (Exception e) {
+            System.out.println("Gagal simpan file: " + e.getMessage());
+        }
+    }
+
+    // Pindahkan ke catatan/history saat dequeue
+    public void pindahKeCatatan(Antrian data) {
+        try (FileWriter fw = new FileWriter("catatan.txt", true)) {
+            fw.write(data.getNoNota() + ";" +
+                    data.getTglMasuk().getTime() + ";" +
+                    data.getTglSelesai().getTime() + ";" +
+                    data.getPelanggan().getNama() + ";" +
+                    data.getPelanggan().getBerat() + ";" +
+                    data.getLayanan() + "\n");
+        } catch (Exception e) {
+            System.out.println("Gagal simpan ke catatan: " + e.getMessage());
+        }
+    }
+
+    // Hapus dari file antrian setelah dequeue
+    public void hapusDariFileAntrian(Antrian data) {
+        String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        try {
+            File f = new File(file);
+            if (!f.exists())
+                return;
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith(data.getNoNota() + ";")) {
+                    sb.append(line).append("\n");
+                }
+            }
+            br.close();
+            FileWriter fw = new FileWriter(f, false);
+            fw.write(sb.toString());
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("Gagal hapus dari file antrian: " + e.getMessage());
+        }
     }
 }
