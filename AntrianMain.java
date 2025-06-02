@@ -12,8 +12,7 @@ public class AntrianMain {
             tail.next = newNode;
             tail = newNode;
         }
-        simpanKeFilePerLayanan(data);
-        System.out.println("Data masuk ke antrian.");
+
     }
 
     public Antrian dequeue() {
@@ -81,6 +80,26 @@ public class AntrianMain {
             System.out.println("Gagal simpan file: " + e.getMessage());
         }
     }
+
+    // Menyimpan semua antrian aktif ke file sesuai layanan
+public void simpanSemuaAntrianKeFile() {
+    if (head == null) {
+        System.out.println("Tidak ada antrian untuk disimpan.");
+        return;
+    }
+
+    Node current = head;
+    int count = 0;
+
+    while (current != null) {
+        simpanKeFilePerLayanan(current.data);
+        current = current.next;
+        count++;
+    }
+
+    System.out.println(count + " antrian berhasil disimpan ke file.");
+}
+
 
     // Pindahkan ke catatan/history saat dequeue
     public void pindahKeCatatan(Antrian data) {
