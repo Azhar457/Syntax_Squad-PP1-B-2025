@@ -16,6 +16,7 @@ public class AntrianMain {
 
     }
 
+    // Melda
     public Antrian dequeue() {
         if (head == null) {
             System.out.println("Antrian kosong!");
@@ -30,6 +31,7 @@ public class AntrianMain {
         return data;
     }
 
+    // Akmal
     public void tampilkanSemua() {
         if (head == null) {
             System.out.println("Antrian kosong.");
@@ -67,7 +69,7 @@ public class AntrianMain {
         System.out.println("============================");
     }
 
-    // Simpan ke file sesuai layanan
+    // Simpan Milda
     public void simpanKeFilePerLayanan(Antrian data) {
         String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
         try (FileWriter fw = new FileWriter(file, true)) {
@@ -82,27 +84,26 @@ public class AntrianMain {
         }
     }
 
-    // Menyimpan semua antrian aktif ke file sesuai layanan
-public void simpanSemuaAntrianKeFile() {
-    if (head == null) {
-        System.out.println("Tidak ada antrian untuk disimpan.");
-        return;
+    // Menyimpan semua Milda
+    public void simpanSemuaAntrianKeFile() {
+        if (head == null) {
+            System.out.println("Tidak ada antrian untuk disimpan.");
+            return;
+        }
+
+        Node current = head;
+        int count = 0;
+
+        while (current != null) {
+            simpanKeFilePerLayanan(current.data);
+            current = current.next;
+            count++;
+        }
+
+        System.out.println(count + " antrian berhasil disimpan ke file.");
     }
 
-    Node current = head;
-    int count = 0;
-
-    while (current != null) {
-        simpanKeFilePerLayanan(current.data);
-        current = current.next;
-        count++;
-    }
-
-    System.out.println(count + " antrian berhasil disimpan ke file.");
-}
-
-
-    // Pindahkan ke catatan/history saat dequeue
+    // Pindahkan ke catatan/history saat dequeue melda
     public void pindahKeCatatan(Antrian data) {
         try (FileWriter fw = new FileWriter("catatan.txt", true)) {
             fw.write(data.getNoNota() + ";" +
