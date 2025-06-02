@@ -10,7 +10,7 @@ public class Main {
 
         do {
             System.out.println("\n===== SISTEM ANTRIAN LAUNDRY =====");
-           System.out.println("1. Tambah Antrian");
+            System.out.println("1. Tambah Antrian");
             System.out.println("2. Lihat Semua Antrian");
             System.out.println("3. Ambil Antrian (Dequeue)");
             System.out.println("4. Simpan Antrian ke File");
@@ -48,7 +48,7 @@ public class Main {
                     queue.enqueue(baru);
                     System.out.println("\nData antrian berhasil ditambahkan:");
                     System.out.println("(Belum disimpan ke file. Gunakan menu 4 untuk menyimpan.)");
-    break;
+                    break;
 
                 case 2:
                     queue.tampilkanSemua();
@@ -62,7 +62,7 @@ public class Main {
                     }
                     break;
 
-                case 4:
+                case 4: //Milda
                     queue.simpanSemuaAntrianKeFile();
                     break;
 
@@ -70,13 +70,11 @@ public class Main {
                     System.out.println("Terima kasih!");
                     break;
 
-            
-
                 default:
                     System.out.println("Pilihan tidak valid!");
             }
 
-        } while (pilihan != 4);
+        } while (pilihan != 5);
         sc.close();
     }
 }
