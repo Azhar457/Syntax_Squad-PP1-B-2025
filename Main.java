@@ -51,17 +51,45 @@ public class Main {
                     System.out.println("(Belum disimpan ke file. Gunakan menu 4 untuk menyimpan.)");
                     break;
 
-                case 2:
-                    queue.tampilkanSemua();
-                    break;
+        
+                    case 2:
+    System.out.println("Lihat antrian mana?");
+    System.out.println("1. Reguler");
+    System.out.println("2. Express");
+    System.out.print("Pilih: ");
+    int lihatPilihan = sc.nextInt();
+    sc.nextLine();
+    if (lihatPilihan == 1) {
+        queue.tampilkanAntrianPerLayanan("Reguler");
+    } else if (lihatPilihan == 2) {
+        queue.tampilkanAntrianPerLayanan("Express");
+    } else {
+        System.out.println("Pilihan tidak valid!");
+    }
+    break;
+
 
                 case 3:
-                    Antrian ambil = queue.dequeue();
-                    if (ambil != null) {
-                        queue.cetakStruk(ambil);
-                        System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
-                    }
-                    break;
+    System.out.println("Ambil antrian mana?");
+    System.out.println("1. Reguler");
+    System.out.println("2. Express");
+    System.out.print("Pilih: ");
+    int ambilPilihan = sc.nextInt();
+    sc.nextLine();
+    Antrian ambil = null;
+    if (ambilPilihan == 1) {
+        ambil = queue.dequeuePerLayanan("Reguler");
+    } else if (ambilPilihan == 2) {
+        ambil = queue.dequeuePerLayanan("Express");
+    } else {
+        System.out.println("Pilihan tidak valid!");
+    }
+    if (ambil != null) {
+        queue.cetakStruk(ambil);
+        System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
+    }
+    break;
+
 
                 case 4: //Milda
                     queue.simpanSemuaAntrianKeFile();

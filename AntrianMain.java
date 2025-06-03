@@ -17,19 +17,46 @@ public class AntrianMain {
     }
 
     // Melda
-    public Antrian dequeue() {
-        if (head == null) {
-            System.out.println("Antrian kosong!");
-            return null;
+    public void tampilkanAntrianPerLayanan(String layanan) {
+    Node current = head;
+    int i = 1;
+    boolean kosong = true;
+    while (current != null) {
+        if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+            System.out.println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
+            kosong = false;
         }
-        Antrian data = head.data;
-        head = head.next;
-        if (head == null)
-            tail = null;
-        pindahKeCatatan(data);
-        hapusDariFileAntrian(data);
-        return data;
+        current = current.next;
+        i++;
     }
+    if (kosong) {
+        System.out.println("Antrian " + layanan + " kosong.");
+    }
+}
+
+public Antrian dequeuePerLayanan(String layanan) {
+    Node current = head, prev = null;
+    while (current != null) {
+        if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+            Antrian data = current.data;
+            if (prev == null) { // head
+                head = current.next;
+                if (head == null) tail = null;
+            } else {
+                prev.next = current.next;
+                if (current == tail) tail = prev;
+            }
+            pindahKeCatatan(data);
+            hapusDariFileAntrian(data);
+            return data;
+        }
+        prev = current;
+        current = current.next;
+    }
+    System.out.println("Antrian " + layanan + " kosong!");
+    return null;
+}
+
 
     public void bacaSemuaAntrianDariFile() {
         bacaAntrianDariFile("antrian-reguler.txt");
