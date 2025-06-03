@@ -31,6 +31,36 @@ public class AntrianMain {
         return data;
     }
 
+    public void bacaSemuaAntrianDariFile() {
+        bacaAntrianDariFile("antrian-reguler.txt");
+        bacaAntrianDariFile("antrian-express.txt");
+    }
+
+    private void bacaAntrianDariFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty() || line.startsWith("//"))
+                    continue;
+                String[] parts = line.split(";");
+                if (parts.length < 6)
+                    continue;
+                String noNota = parts[0];
+                long tglMasuk = Long.parseLong(parts[1]);
+                long tglSelesai = Long.parseLong(parts[2]);
+                String nama = parts[3];
+                double berat = Double.parseDouble(parts[4]);
+                String layanan = parts[5];
+                Pelanggan p = new Pelanggan(nama, berat);
+                Antrian a = new Antrian(noNota, new java.util.Date(tglMasuk), new java.util.Date(tglSelesai), p,
+                        layanan);
+                enqueue(a);
+            }
+        } catch (IOException e) {
+            // File mungkin belum ada, abaikan
+        }
+    }
+
     // Akmal
     public void tampilkanSemua() {
         if (head == null) {

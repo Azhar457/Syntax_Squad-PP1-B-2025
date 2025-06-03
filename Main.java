@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         AntrianMain queue = new AntrianMain();
+        queue.bacaSemuaAntrianDariFile(); // Membaca antrian dari file saat program dimulai
         Scanner sc = new Scanner(System.in);
         int pilihan;
 
