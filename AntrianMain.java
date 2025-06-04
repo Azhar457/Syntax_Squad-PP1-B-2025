@@ -18,45 +18,47 @@ public class AntrianMain {
 
     // Melda
     public void tampilkanAntrianPerLayanan(String layanan) {
-    Node current = head;
-    int i = 1;
-    boolean kosong = true;
-    while (current != null) {
-        if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
-            System.out.println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
-            kosong = false;
-        }
-        current = current.next;
-        i++;
-    }
-    if (kosong) {
-        System.out.println("Antrian " + layanan + " kosong.");
-    }
-}
-
-public Antrian dequeuePerLayanan(String layanan) {
-    Node current = head, prev = null;
-    while (current != null) {
-        if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
-            Antrian data = current.data;
-            if (prev == null) { // head
-                head = current.next;
-                if (head == null) tail = null;
-            } else {
-                prev.next = current.next;
-                if (current == tail) tail = prev;
+        Node current = head;
+        int i = 1;
+        boolean kosong = true;
+        while (current != null) {
+            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+                System.out.println(
+                        "[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
+                kosong = false;
             }
-            pindahKeCatatan(data);
-            hapusDariFileAntrian(data);
-            return data;
+            current = current.next;
+            i++;
         }
-        prev = current;
-        current = current.next;
+        if (kosong) {
+            System.out.println("Antrian " + layanan + " kosong.");
+        }
     }
-    System.out.println("Antrian " + layanan + " kosong!");
-    return null;
-}
 
+    public Antrian dequeuePerLayanan(String layanan) {
+        Node current = head, prev = null;
+        while (current != null) {
+            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+                Antrian data = current.data;
+                if (prev == null) { // head
+                    head = current.next;
+                    if (head == null)
+                        tail = null;
+                } else {
+                    prev.next = current.next;
+                    if (current == tail)
+                        tail = prev;
+                }
+                pindahKeCatatan(data);
+                hapusDariFileAntrian(data);
+                return data;
+            }
+            prev = current;
+            current = current.next;
+        }
+        System.out.println("Antrian " + layanan + " kosong!");
+        return null;
+    }
 
     public void bacaSemuaAntrianDariFile() {
         bacaAntrianDariFile("antrian-reguler.txt");
@@ -128,16 +130,31 @@ public Antrian dequeuePerLayanan(String layanan) {
 
     // Simpan Milda
     public void simpanKeFilePerLayanan(Antrian data) {
-        String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
-        try (FileWriter fw = new FileWriter(file, true)) {
-            fw.write(data.getNoNota() + ";" +
-                    data.getTglMasuk().getTime() + ";" +
-                    data.getTglSelesai().getTime() + ";" +
-                    data.getPelanggan().getNama() + ";" +
-                    data.getPelanggan().getBerat() + ";" +
-                    data.getLayanan() + "\n");
+        overwriteFilePerLayanan("Reguler");
+        overwriteFilePerLayanan("Express");
+        System.out.println("Semua antrian berhasil disimpan (overwrite) ke file.");
+    }
+
+    // Azhar
+    // Overwrite file antrian per layanan
+    // Digunakan saat ada perubahan pada antrian
+    public void overwriteFilePerLayanan(String layanan) {
+        String file = layanan.equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        try (FileWriter fw = new FileWriter(file, false)) { // false = overwrite
+            Node current = head;
+            while (current != null) {
+                if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+                    fw.write(current.data.getNoNota() + ";" +
+                            current.data.getTglMasuk().getTime() + ";" +
+                            current.data.getTglSelesai().getTime() + ";" +
+                            current.data.getPelanggan().getNama() + ";" +
+                            current.data.getPelanggan().getBerat() + ";" +
+                            current.data.getLayanan() + "\n");
+                }
+                current = current.next;
+            }
         } catch (Exception e) {
-            System.out.println("Gagal simpan file: " + e.getMessage());
+            System.out.println("Gagal overwrite file: " + e.getMessage());
         }
     }
 
