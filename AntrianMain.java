@@ -17,18 +17,77 @@ public class AntrianMain {
     }
 
     // Melda
-    public Antrian dequeue() {
-        if (head == null) {
-            System.out.println("Antrian kosong!");
-            return null;
+    public void tampilkanAntrianPerLayanan(String layanan) {
+        Node current = head;
+        int i = 1;
+        boolean kosong = true;
+        while (current != null) {
+            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+                System.out.println(
+                        "[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
+                kosong = false;
+            }
+            current = current.next;
+            i++;
         }
-        Antrian data = head.data;
-        head = head.next;
-        if (head == null)
-            tail = null;
-        pindahKeCatatan(data);
-        hapusDariFileAntrian(data);
-        return data;
+        if (kosong) {
+            System.out.println("Antrian " + layanan + " kosong.");
+        }
+    }
+
+    public Antrian dequeuePerLayanan(String layanan) {
+        Node current = head, prev = null;
+        while (current != null) {
+            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+                Antrian data = current.data;
+                if (prev == null) { // head
+                    head = current.next;
+                    if (head == null)
+                        tail = null;
+                } else {
+                    prev.next = current.next;
+                    if (current == tail)
+                        tail = prev;
+                }
+                pindahKeCatatan(data);
+                hapusDariFileAntrian(data);
+                return data;
+            }
+            prev = current;
+            current = current.next;
+        }
+        System.out.println("Antrian " + layanan + " kosong!");
+        return null;
+    }
+
+    public void bacaSemuaAntrianDariFile() {
+        bacaAntrianDariFile("antrian-reguler.txt");
+        bacaAntrianDariFile("antrian-express.txt");
+    }
+
+    private void bacaAntrianDariFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty() || line.startsWith("//"))
+                    continue;
+                String[] parts = line.split(";");
+                if (parts.length < 6)
+                    continue;
+                String noNota = parts[0];
+                long tglMasuk = Long.parseLong(parts[1]);
+                long tglSelesai = Long.parseLong(parts[2]);
+                String nama = parts[3];
+                double berat = Double.parseDouble(parts[4]);
+                String layanan = parts[5];
+                Pelanggan p = new Pelanggan(nama, berat);
+                Antrian a = new Antrian(noNota, new java.util.Date(tglMasuk), new java.util.Date(tglSelesai), p,
+                        layanan);
+                enqueue(a);
+            }
+        } catch (IOException e) {
+            // File mungkin belum ada, abaikan
+        }
     }
 
     // Akmal
@@ -71,16 +130,31 @@ public class AntrianMain {
 
     // Simpan Milda
     public void simpanKeFilePerLayanan(Antrian data) {
-        String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
-        try (FileWriter fw = new FileWriter(file, true)) {
-            fw.write(data.getNoNota() + ";" +
-                    data.getTglMasuk().getTime() + ";" +
-                    data.getTglSelesai().getTime() + ";" +
-                    data.getPelanggan().getNama() + ";" +
-                    data.getPelanggan().getBerat() + ";" +
-                    data.getLayanan() + "\n");
+        overwriteFilePerLayanan("Reguler");
+        overwriteFilePerLayanan("Express");
+        System.out.println("Semua antrian berhasil disimpan (overwrite) ke file.");
+    }
+
+    // Azhar
+    // Overwrite file antrian per layanan
+    // Digunakan saat ada perubahan pada antrian
+    public void overwriteFilePerLayanan(String layanan) {
+        String file = layanan.equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        try (FileWriter fw = new FileWriter(file, false)) { // false = overwrite
+            Node current = head;
+            while (current != null) {
+                if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+                    fw.write(current.data.getNoNota() + ";" +
+                            current.data.getTglMasuk().getTime() + ";" +
+                            current.data.getTglSelesai().getTime() + ";" +
+                            current.data.getPelanggan().getNama() + ";" +
+                            current.data.getPelanggan().getBerat() + ";" +
+                            current.data.getLayanan() + "\n");
+                }
+                current = current.next;
+            }
         } catch (Exception e) {
-            System.out.println("Gagal simpan file: " + e.getMessage());
+            System.out.println("Gagal overwrite file: " + e.getMessage());
         }
     }
 
