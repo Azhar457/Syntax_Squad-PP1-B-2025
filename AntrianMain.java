@@ -4,6 +4,7 @@ import java.io.*;
 public class AntrianMain {
     Node head, tail;
 
+    // ini bagian aku queue antrian-(express, reguler)
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
         if (tail == null) {
@@ -12,7 +13,6 @@ public class AntrianMain {
             tail.next = newNode;
             tail = newNode;
         }
-        simpanKeFilePerLayanan(data);
         System.out.println("Data masuk ke antrian.");
     }
 
@@ -67,6 +67,7 @@ public class AntrianMain {
         System.out.println("============================");
     }
 
+    // ini punya ilona
     // Simpan ke file sesuai layanan
     public void simpanKeFilePerLayanan(Antrian data) {
         String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";

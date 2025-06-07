@@ -44,6 +44,7 @@ public class Main {
                     Pelanggan pelanggan = new Pelanggan(nama, berat);
                     Antrian baru = new Antrian(nota, masuk, selesai, pelanggan, layanan);
 
+                    // ini bagian aku queue saat masuk ke antrian-(express, reguler)
                     queue.enqueue(baru);
                     System.out.println("Antrian berhasil ditambahkan!");
                     break;
