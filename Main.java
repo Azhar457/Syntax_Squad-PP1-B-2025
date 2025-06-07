@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         AntrianMain queue = new AntrianMain();
+        queue.bacaSemuaAntrianDariFile(); // Membaca antrian dari file saat program dimulai
         Scanner sc = new Scanner(System.in);
         int pilihan;
 
@@ -13,7 +14,8 @@ public class Main {
             System.out.println("1. Tambah Antrian");
             System.out.println("2. Lihat Semua Antrian");
             System.out.println("3. Ambil Antrian (Dequeue)");
-            System.out.println("4. Keluar");
+            System.out.println("4. Simpan Antrian ke File");
+            System.out.println("5. Keluar");
             System.out.print("Pilih menu: ");
             pilihan = sc.nextInt();
             sc.nextLine(); // clear buffer
@@ -46,22 +48,55 @@ public class Main {
 
                     // ini bagian aku queue saat masuk ke antrian-(express, reguler)
                     queue.enqueue(baru);
-                    System.out.println("Antrian berhasil ditambahkan!");
+                    System.out.println("\nData antrian berhasil ditambahkan:");
+                    System.out.println("(Belum disimpan ke file. Gunakan menu 4 untuk menyimpan.)");
                     break;
 
-                case 2:
-                    queue.tampilkanSemua();
-                    break;
+        
+                    case 2:
+    System.out.println("Lihat antrian mana?");
+    System.out.println("1. Reguler");
+    System.out.println("2. Express");
+    System.out.print("Pilih: ");
+    int lihatPilihan = sc.nextInt();
+    sc.nextLine();
+    if (lihatPilihan == 1) {
+        queue.tampilkanAntrianPerLayanan("Reguler");
+    } else if (lihatPilihan == 2) {
+        queue.tampilkanAntrianPerLayanan("Express");
+    } else {
+        System.out.println("Pilihan tidak valid!");
+    }
+    break;
+
 
                 case 3:
-                    Antrian ambil = queue.dequeue();
-                    if (ambil != null) {
-                        queue.cetakStruk(ambil);
-                        System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
-                    }
+    System.out.println("Ambil antrian mana?");
+    System.out.println("1. Reguler");
+    System.out.println("2. Express");
+    System.out.print("Pilih: ");
+    int ambilPilihan = sc.nextInt();
+    sc.nextLine();
+    Antrian ambil = null;
+    if (ambilPilihan == 1) {
+        ambil = queue.dequeuePerLayanan("Reguler");
+    } else if (ambilPilihan == 2) {
+        ambil = queue.dequeuePerLayanan("Express");
+    } else {
+        System.out.println("Pilihan tidak valid!");
+    }
+    if (ambil != null) {
+        queue.cetakStruk(ambil);
+        System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
+    }
+    break;
+
+
+                case 4: //Milda
+                    queue.simpanSemuaAntrianKeFile();
                     break;
 
-                case 4:
+                case 5:
                     System.out.println("Terima kasih!");
                     break;
 
@@ -69,7 +104,7 @@ public class Main {
                     System.out.println("Pilihan tidak valid!");
             }
 
-        } while (pilihan != 4);
+        } while (pilihan != 5);
         sc.close();
     }
 }
