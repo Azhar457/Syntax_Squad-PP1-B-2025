@@ -2,6 +2,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import entity.Antrian;
+import entity.Pelanggan;
+import services.AntrianMain;
+
 public class Main {
     public static void main(String[] args) {
         AntrianMain queue = new AntrianMain();
