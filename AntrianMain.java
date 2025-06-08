@@ -2,26 +2,17 @@ import java.text.SimpleDateFormat;
 import java.io.*;
 
 public class AntrianMain {
-    Node head, tail;
-
-
-    // ini bagian aku queue antrian-(express, reguler)
+    public Node head, tail;
 
     // Ilona
-
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
         if (tail == null) {
             head = tail = newNode;
         } else {
-            tail.next = newNode;
+            tail.setNext(newNode);
             tail = newNode;
         }
-
-        System.out.println("Data masuk ke antrian.");
-
-
-
     }
 
     // Melda
@@ -30,12 +21,13 @@ public class AntrianMain {
         int i = 1;
         boolean kosong = true;
         while (current != null) {
-            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+            if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
                 System.out.println(
-                        "[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
+                        "[" + i + "] " + current.getData().getPelanggan().getNama() + " - "
+                                + current.getData().getNoNota());
                 kosong = false;
             }
-            current = current.next;
+            current = current.getNext();
             i++;
         }
         if (kosong) {
@@ -46,14 +38,14 @@ public class AntrianMain {
     public Antrian dequeuePerLayanan(String layanan) {
         Node current = head, prev = null;
         while (current != null) {
-            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
-                Antrian data = current.data;
+            if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
+                Antrian data = current.getData();
                 if (prev == null) { // head
-                    head = current.next;
+                    head = current.getNext();
                     if (head == null)
                         tail = null;
                 } else {
-                    prev.next = current.next;
+                    prev.setNext(current.getNext());
                     if (current == tail)
                         tail = prev;
                 }
@@ -62,7 +54,7 @@ public class AntrianMain {
                 return data;
             }
             prev = current;
-            current = current.next;
+            current = current.getNext();
         }
         System.out.println("Antrian " + layanan + " kosong!");
         return null;
@@ -111,9 +103,10 @@ public class AntrianMain {
         Node current = head;
         int i = 1;
         while (current != null) {
-            System.out.println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota()
-                    + " - " + current.data.getLayanan());
-            current = current.next;
+            System.out.println(
+                    "[" + i + "] " + current.getData().getPelanggan().getNama() + " - " + current.getData().getNoNota()
+                            + " - " + current.getData().getLayanan());
+            current = current.getNext();
             i++;
         }
     }
@@ -139,7 +132,6 @@ public class AntrianMain {
         System.out.println("============================");
     }
 
-
     // ini punya ilona
     // Simpan ke file sesuai layanan
 
@@ -148,7 +140,7 @@ public class AntrianMain {
     public void simpanKeFilePerLayanan(Antrian data) {
         overwriteFilePerLayanan("Reguler");
         overwriteFilePerLayanan("Express");
-        System.out.println("Semua antrian berhasil disimpan (overwrite) ke file.");
+        System.out.println("Semua antrian berhasil disimpan ke file.");
     }
 
     // Azhar
@@ -156,18 +148,19 @@ public class AntrianMain {
     // Digunakan saat ada perubahan pada antrian
     public void overwriteFilePerLayanan(String layanan) {
         String file = layanan.equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try (FileWriter fw = new FileWriter(file, false)) { // false = overwrite
             Node current = head;
             while (current != null) {
-                if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
-                    fw.write(current.data.getNoNota() + ";" +
-                            current.data.getTglMasuk().getTime() + ";" +
-                            current.data.getTglSelesai().getTime() + ";" +
-                            current.data.getPelanggan().getNama() + ";" +
-                            current.data.getPelanggan().getBerat() + ";" +
-                            current.data.getLayanan() + "\n");
+                if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
+                    fw.write(current.getData().getNoNota() + ";" +
+                            sdf.format(current.getData().getTglMasuk()) + ";" +
+                            sdf.format(current.getData().getTglSelesai()) + ";" +
+                            current.getData().getPelanggan().getNama() + ";" +
+                            current.getData().getPelanggan().getBerat() + ";" +
+                            current.getData().getLayanan() + "\n");
                 }
-                current = current.next;
+                current = current.getNext();
             }
         } catch (Exception e) {
             System.out.println("Gagal overwrite file: " + e.getMessage());
@@ -185,8 +178,8 @@ public class AntrianMain {
         int count = 0;
 
         while (current != null) {
-            simpanKeFilePerLayanan(current.data);
-            current = current.next;
+            simpanKeFilePerLayanan(current.getData());
+            current = current.getNext();
             count++;
         }
 
@@ -195,13 +188,11 @@ public class AntrianMain {
 
     // Pindahkan ke catatan/history saat dequeue melda
     public void pindahKeCatatan(Antrian data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try (FileWriter fw = new FileWriter("catatan.txt", true)) {
-            fw.write(data.getNoNota() + ";" +
-                    data.getTglMasuk().getTime() + ";" +
-                    data.getTglSelesai().getTime() + ";" +
-                    data.getPelanggan().getNama() + ";" +
-                    data.getPelanggan().getBerat() + ";" +
-                    data.getLayanan() + "\n");
+            fw.write(data.getNoNota() + ";" + sdf.format(data.getTglMasuk()) + ";" +
+                    sdf.format(data.getTglSelesai()) + ";" + data.getPelanggan().getNama() + ";" +
+                    data.getPelanggan().getBerat() + ";" + data.getLayanan() + "\n");
         } catch (Exception e) {
             System.out.println("Gagal simpan ke catatan: " + e.getMessage());
         }
