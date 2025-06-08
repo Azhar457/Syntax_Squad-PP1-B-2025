@@ -1,10 +1,12 @@
+package src;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-import entity.Antrian;
-import entity.Pelanggan;
-import services.AntrianMain;
+import src.entity.Antrian;
+import src.entity.Pelanggan;
+import src.services.AntrianMain;
 
 public class Main {
     public static void main(String[] args) {

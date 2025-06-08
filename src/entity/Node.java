@@ -1,4 +1,4 @@
-package entity;
+package src.entity;
 public class Node {
     private Antrian data;
     private Node next;

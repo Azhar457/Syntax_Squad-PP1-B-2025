@@ -6,13 +6,15 @@
 
 1.  **Jalankan Program**
 
-    - Compile semua file `.java`:
+    - Compile semua file `.java` dengan struktur folder baru:
+
       ```sh
-      javac *.java
+      javac -d bin -sourcepath src src/Main.java
       ```
+
     - Jalankan program:
       ```sh
-      java Main
+      java -cp bin Main
       ```
 
 2.  **Menu Utama**
@@ -20,13 +22,17 @@
     - Setelah program berjalan, akan muncul menu:
       ```
       ===== SISTEM ANTRIAN LAUNDRY =====
-        1. Menu Tambah Antrian
-        2. Menu Lihat Semua Antrian
-        3. Ambil Antrian (Dequeue)
-        4. Simpan Antrian ke File
-        0. Keluar
+      1. Menu Tambah Antrian
+      2. Menu Lihat Semua Antrian
+      3. Ambil Antrian (Dequeue)
+      4. Simpan Antrian ke File
+      0. Keluar
       =================================
-    Pilih menu:
+      Pilih menu:
+      ```
+
+    ```
+
     ```
 
 3.  **Menu Tambah Antrian**
