@@ -140,7 +140,6 @@ public class AntrianMain {
     public void simpanKeFilePerLayanan(Antrian data) {
         overwriteFilePerLayanan("Reguler");
         overwriteFilePerLayanan("Express");
-        System.out.println("Semua antrian berhasil disimpan ke file.");
     }
 
     // Azhar
