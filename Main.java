@@ -36,7 +36,7 @@ public class Main {
 
                         switch (subPilihan) {
                             case 1:
-                            System.out.println("");
+                                System.out.println("");
                                 System.out.print("Masukkan nama pelanggan: ");
                                 String nama = sc.nextLine();
 
@@ -100,6 +100,7 @@ public class Main {
                         System.out.print("Pilih: ");
                         subAmbil = sc.nextInt();
                         sc.nextLine();
+                        System.out.println("==============================");
 
                         switch (subAmbil) {
                             case 1:
