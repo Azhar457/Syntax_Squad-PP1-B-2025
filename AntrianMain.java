@@ -4,11 +4,7 @@ import java.io.*;
 public class AntrianMain {
     Node head, tail;
 
-
-    // ini bagian aku queue antrian-(express, reguler)
-
     // Ilona
-
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
         if (tail == null) {
@@ -17,11 +13,6 @@ public class AntrianMain {
             tail.next = newNode;
             tail = newNode;
         }
-
-        System.out.println("Data masuk ke antrian.");
-
-
-
     }
 
     // Melda
@@ -136,7 +127,6 @@ public class AntrianMain {
         System.out.println("============================");
     }
 
-
     // ini punya ilona
     // Simpan ke file sesuai layanan
 
@@ -153,13 +143,14 @@ public class AntrianMain {
     // Digunakan saat ada perubahan pada antrian
     public void overwriteFilePerLayanan(String layanan) {
         String file = layanan.equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try (FileWriter fw = new FileWriter(file, false)) { // false = overwrite
             Node current = head;
             while (current != null) {
                 if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
                     fw.write(current.data.getNoNota() + ";" +
-                            current.data.getTglMasuk().getTime() + ";" +
-                            current.data.getTglSelesai().getTime() + ";" +
+                            sdf.format(current.data.getTglMasuk()) + ";" +
+                            sdf.format(current.data.getTglSelesai()) + ";" +
                             current.data.getPelanggan().getNama() + ";" +
                             current.data.getPelanggan().getBerat() + ";" +
                             current.data.getLayanan() + "\n");
