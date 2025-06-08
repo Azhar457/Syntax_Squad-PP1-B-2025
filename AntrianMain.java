@@ -145,7 +145,7 @@ public class AntrianMain {
     public void simpanKeFilePerLayanan(Antrian data) {
         overwriteFilePerLayanan("Reguler");
         overwriteFilePerLayanan("Express");
-        System.out.println("Semua antrian berhasil disimpan (overwrite) ke file.");
+        System.out.println("Semua antrian berhasil disimpan ke file.");
     }
 
     // Azhar
@@ -192,13 +192,11 @@ public class AntrianMain {
 
     // Pindahkan ke catatan/history saat dequeue melda
     public void pindahKeCatatan(Antrian data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try (FileWriter fw = new FileWriter("catatan.txt", true)) {
-            fw.write(data.getNoNota() + ";" +
-                    data.getTglMasuk().getTime() + ";" +
-                    data.getTglSelesai().getTime() + ";" +
-                    data.getPelanggan().getNama() + ";" +
-                    data.getPelanggan().getBerat() + ";" +
-                    data.getLayanan() + "\n");
+            fw.write(data.getNoNota() + ";" + sdf.format(data.getTglMasuk()) + ";" +
+                    sdf.format(data.getTglSelesai()) + ";" + data.getPelanggan().getNama() + ";" +
+                    data.getPelanggan().getBerat() + ";" + data.getLayanan() + "\n");
         } catch (Exception e) {
             System.out.println("Gagal simpan ke catatan: " + e.getMessage());
         }

@@ -11,92 +11,129 @@ public class Main {
 
         do {
             System.out.println("\n===== SISTEM ANTRIAN LAUNDRY =====");
-            System.out.println("1. Tambah Antrian");
-            System.out.println("2. Lihat Semua Antrian");
+            System.out.println("1. Menu Tambah Antrian");
+            System.out.println("2. Menu Lihat Semua Antrian");
             System.out.println("3. Ambil Antrian (Dequeue)");
             System.out.println("4. Simpan Antrian ke File");
-            System.out.println("5. Keluar");
+            System.out.println("0. Keluar");
+            System.out.println("===================================");
+            System.out.println("");
             System.out.print("Pilih menu: ");
             pilihan = sc.nextInt();
             sc.nextLine(); // clear buffer
 
             switch (pilihan) {
                 case 1:
-                    System.out.print("Masukkan nama pelanggan: ");
-                    String nama = sc.nextLine();
+                    int subPilihan;
+                    do {
+                        System.out.println("\n===== MENU TAMBAH ANTRIAN =====");
+                        System.out.println("1. Tambah Antrian");
+                        System.out.println("2. Simpan Antrian");
+                        System.out.println("3. Kembali ke Menu Utama");
+                        System.out.print("Pilih: ");
+                        subPilihan = sc.nextInt();
+                        sc.nextLine();
 
-                    System.out.print("Masukkan berat laundry (kg): ");
-                    double berat = sc.nextDouble();
-                    sc.nextLine(); // clear buffer
+                        switch (subPilihan) {
+                            case 1:
+                                System.out.print("Masukkan nama pelanggan: ");
+                                String nama = sc.nextLine();
 
-                    System.out.print("Jenis layanan (1 = Reguler, 2 = Express): ");
-                    int jenis = sc.nextInt();
-                    sc.nextLine();
+                                System.out.print("Masukkan berat laundry (kg): ");
+                                double berat = sc.nextDouble();
+                                sc.nextLine();
 
-                    String layanan = (jenis == 2) ? "Express" : "Reguler";
-                    int hariProses = (jenis == 2) ? 1 : 3;
+                                System.out.print("Jenis layanan (1 = Reguler, 2 = Express): ");
+                                int jenis = sc.nextInt();
+                                sc.nextLine();
 
-                    Date masuk = new Date();
-                    Date selesai = new Date(masuk.getTime() + hariProses * 24 * 60 * 60 * 1000L);
+                                String layanan = (jenis == 2) ? "Express" : "Reguler";
+                                int hariProses = (jenis == 2) ? 1 : 3;
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
-                    String timePart = sdf.format(new Date());
-                    String nota = "TRX/" + timePart + "-" + (int) (Math.random() * 1000);
+                                Date masuk = new Date();
+                                Date selesai = new Date(masuk.getTime() + hariProses * 24 * 60 * 60 * 1000L);
 
-                    Pelanggan pelanggan = new Pelanggan(nama, berat);
-                    Antrian baru = new Antrian(nota, masuk, selesai, pelanggan, layanan);
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
+                                String timePart = sdf.format(new Date());
+                                String nota = "TRX/" + timePart;
+                                Pelanggan pelanggan = new Pelanggan(nama, berat);
+                                Antrian baru = new Antrian(nota, masuk, selesai, pelanggan, layanan);
 
-                    // ini bagian aku queue saat masuk ke antrian-(express, reguler)
-                    queue.enqueue(baru);
-                    System.out.println("\nData antrian berhasil ditambahkan:");
-                    System.out.println("(Belum disimpan ke file. Gunakan menu 4 untuk menyimpan.)");
+                                queue.enqueue(baru);
+                                System.out.println("\nData antrian berhasil ditambahkan!");
+                                break;
+                            case 2:
+                                queue.simpanSemuaAntrianKeFile();
+                                break;
+                            case 3:
+                                System.out.println("Kembali ke menu utama...");
+                                break;
+                            default:
+                                System.out.println("Pilihan tidak valid!");
+                        }
+                    } while (subPilihan != 3);
                     break;
 
-        
-                    case 2:
-    System.out.println("Lihat antrian mana?");
-    System.out.println("1. Reguler");
-    System.out.println("2. Express");
-    System.out.print("Pilih: ");
-    int lihatPilihan = sc.nextInt();
-    sc.nextLine();
-    if (lihatPilihan == 1) {
-        queue.tampilkanAntrianPerLayanan("Reguler");
-    } else if (lihatPilihan == 2) {
-        queue.tampilkanAntrianPerLayanan("Express");
-    } else {
-        System.out.println("Pilihan tidak valid!");
-    }
-    break;
-
+                case 2:
+                    System.out.println("Lihat antrian mana?");
+                    System.out.println("1. Reguler");
+                    System.out.println("2. Express");
+                    System.out.print("Pilih: ");
+                    int lihatPilihan = sc.nextInt();
+                    sc.nextLine();
+                    if (lihatPilihan == 1) {
+                        queue.tampilkanAntrianPerLayanan("Reguler");
+                    } else if (lihatPilihan == 2) {
+                        queue.tampilkanAntrianPerLayanan("Express");
+                    } else {
+                        System.out.println("Pilihan tidak valid!");
+                    }
+                    break;
 
                 case 3:
-    System.out.println("Ambil antrian mana?");
-    System.out.println("1. Reguler");
-    System.out.println("2. Express");
-    System.out.print("Pilih: ");
-    int ambilPilihan = sc.nextInt();
-    sc.nextLine();
-    Antrian ambil = null;
-    if (ambilPilihan == 1) {
-        ambil = queue.dequeuePerLayanan("Reguler");
-    } else if (ambilPilihan == 2) {
-        ambil = queue.dequeuePerLayanan("Express");
-    } else {
-        System.out.println("Pilihan tidak valid!");
-    }
-    if (ambil != null) {
-        queue.cetakStruk(ambil);
-        System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
-    }
-    break;
+                    int subAmbil;
+                    do {
+                        System.out.println("\n===== MENU AMBIL ANTRIAN =====");
+                        System.out.println("1. Dequeue Antrian");
+                        System.out.println("2. Kembali ke Menu Utama");
+                        System.out.print("Pilih: ");
+                        subAmbil = sc.nextInt();
+                        sc.nextLine();
 
-
-                case 4: //Milda
+                        switch (subAmbil) {
+                            case 1:
+                                System.out.println("Ambil antrian mana?");
+                                System.out.println("1. Reguler");
+                                System.out.println("2. Express");
+                                System.out.print("Pilih: ");
+                                int ambilPilihan = sc.nextInt();
+                                sc.nextLine();
+                                Antrian ambil = null;
+                                if (ambilPilihan == 1) {
+                                    ambil = queue.dequeuePerLayanan("Reguler");
+                                } else if (ambilPilihan == 2) {
+                                    ambil = queue.dequeuePerLayanan("Express");
+                                } else {
+                                    System.out.println("Pilihan tidak valid!");
+                                }
+                                if (ambil != null) {
+                                    queue.cetakStruk(ambil);
+                                    System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
+                                }
+                                break;
+                            case 2:
+                                System.out.println("Kembali ke menu utama...");
+                                break;
+                            default:
+                                System.out.println("Pilihan tidak valid!");
+                        }
+                    } while (subAmbil != 2);
+                    break;
+                case 4: // Milda
                     queue.simpanSemuaAntrianKeFile();
                     break;
 
-                case 5:
+                case 0:
                     System.out.println("Terima kasih!");
                     break;
 
@@ -104,7 +141,7 @@ public class Main {
                     System.out.println("Pilihan tidak valid!");
             }
 
-        } while (pilihan != 5);
+        } while (pilihan != 0);
         sc.close();
     }
 }
