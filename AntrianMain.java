@@ -74,29 +74,32 @@ public class AntrianMain {
     }
 
     private void bacaAntrianDariFile(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty() || line.startsWith("//"))
-                    continue;
-                String[] parts = line.split(";");
-                if (parts.length < 6)
-                    continue;
-                String noNota = parts[0];
-                long tglMasuk = Long.parseLong(parts[1]);
-                long tglSelesai = Long.parseLong(parts[2]);
-                String nama = parts[3];
-                double berat = Double.parseDouble(parts[4]);
-                String layanan = parts[5];
-                Pelanggan p = new Pelanggan(nama, berat);
-                Antrian a = new Antrian(noNota, new java.util.Date(tglMasuk), new java.util.Date(tglSelesai), p,
-                        layanan);
-                enqueue(a);
-            }
-        } catch (IOException e) {
-            // File mungkin belum ada, abaikan
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (line.trim().isEmpty() || line.startsWith("//"))
+                continue;
+            String[] parts = line.split(";");
+            if (parts.length < 6)
+                continue;
+            String noNota = parts[0];
+            // Ubah di sini: parse tanggal dari string
+            java.util.Date tglMasuk = sdf.parse(parts[1]);
+            java.util.Date tglSelesai = sdf.parse(parts[2]);
+            String nama = parts[3];
+            double berat = Double.parseDouble(parts[4]);
+            String layanan = parts[5];
+            Pelanggan p = new Pelanggan(nama, berat);
+            Antrian a = new Antrian(noNota, tglMasuk, tglSelesai, p, layanan);
+            enqueue(a);
         }
+    } catch (IOException e) {
+        // File mungkin belum ada, abaikan
+    } catch (Exception e) {
+        System.out.println("Gagal baca file: " + e.getMessage());
     }
+}
 
     // Akmal
     public void tampilkanSemua() {
