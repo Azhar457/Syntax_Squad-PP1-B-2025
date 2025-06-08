@@ -54,7 +54,7 @@ public class Main {
                                 Date masuk = new Date();
                                 Date selesai = new Date(masuk.getTime() + hariProses * 24 * 60 * 60 * 1000L);
 
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
                                 String timePart = sdf.format(new Date());
                                 String nota = "TRX/" + timePart;
                                 Pelanggan pelanggan = new Pelanggan(nama, berat);
