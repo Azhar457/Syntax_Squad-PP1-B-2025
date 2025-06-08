@@ -4,11 +4,11 @@ import java.io.*;
 public class AntrianMain {
     Node head, tail;
 
-<<<<<<< HEAD
+
     // ini bagian aku queue antrian-(express, reguler)
-=======
+
     // Ilona
->>>>>>> 2d5afffdfa2666d8f7671709f645760f9d6ca088
+
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
         if (tail == null) {
@@ -17,11 +17,11 @@ public class AntrianMain {
             tail.next = newNode;
             tail = newNode;
         }
-<<<<<<< HEAD
-        System.out.println("Data masuk ke antrian.");
-=======
 
->>>>>>> 2d5afffdfa2666d8f7671709f645760f9d6ca088
+        System.out.println("Data masuk ke antrian.");
+
+
+
     }
 
     // Melda
@@ -136,12 +136,12 @@ public class AntrianMain {
         System.out.println("============================");
     }
 
-<<<<<<< HEAD
+
     // ini punya ilona
     // Simpan ke file sesuai layanan
-=======
+
     // Simpan Milda
->>>>>>> 2d5afffdfa2666d8f7671709f645760f9d6ca088
+
     public void simpanKeFilePerLayanan(Antrian data) {
         overwriteFilePerLayanan("Reguler");
         overwriteFilePerLayanan("Express");
