@@ -10,7 +10,7 @@ public class AntrianMain {
         if (tail == null) {
             head = tail = newNode;
         } else {
-            tail.next = newNode;
+            tail.setNext(newNode);
             tail = newNode;
         }
     }
@@ -21,12 +21,13 @@ public class AntrianMain {
         int i = 1;
         boolean kosong = true;
         while (current != null) {
-            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
+            if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
                 System.out.println(
-                        "[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota());
+                        "[" + i + "] " + current.getData().getPelanggan().getNama() + " - "
+                                + current.getData().getNoNota());
                 kosong = false;
             }
-            current = current.next;
+            current = current.getNext();
             i++;
         }
         if (kosong) {
@@ -37,14 +38,14 @@ public class AntrianMain {
     public Antrian dequeuePerLayanan(String layanan) {
         Node current = head, prev = null;
         while (current != null) {
-            if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
-                Antrian data = current.data;
+            if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
+                Antrian data = current.getData();
                 if (prev == null) { // head
-                    head = current.next;
+                    head = current.getNext();
                     if (head == null)
                         tail = null;
                 } else {
-                    prev.next = current.next;
+                    prev.setNext(current.getNext());
                     if (current == tail)
                         tail = prev;
                 }
@@ -53,7 +54,7 @@ public class AntrianMain {
                 return data;
             }
             prev = current;
-            current = current.next;
+            current = current.getNext();
         }
         System.out.println("Antrian " + layanan + " kosong!");
         return null;
@@ -99,9 +100,10 @@ public class AntrianMain {
         Node current = head;
         int i = 1;
         while (current != null) {
-            System.out.println("[" + i + "] " + current.data.getPelanggan().getNama() + " - " + current.data.getNoNota()
-                    + " - " + current.data.getLayanan());
-            current = current.next;
+            System.out.println(
+                    "[" + i + "] " + current.getData().getPelanggan().getNama() + " - " + current.getData().getNoNota()
+                            + " - " + current.getData().getLayanan());
+            current = current.getNext();
             i++;
         }
     }
@@ -147,15 +149,15 @@ public class AntrianMain {
         try (FileWriter fw = new FileWriter(file, false)) { // false = overwrite
             Node current = head;
             while (current != null) {
-                if (current.data.getLayanan().equalsIgnoreCase(layanan)) {
-                    fw.write(current.data.getNoNota() + ";" +
-                            sdf.format(current.data.getTglMasuk()) + ";" +
-                            sdf.format(current.data.getTglSelesai()) + ";" +
-                            current.data.getPelanggan().getNama() + ";" +
-                            current.data.getPelanggan().getBerat() + ";" +
-                            current.data.getLayanan() + "\n");
+                if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
+                    fw.write(current.getData().getNoNota() + ";" +
+                            sdf.format(current.getData().getTglMasuk()) + ";" +
+                            sdf.format(current.getData().getTglSelesai()) + ";" +
+                            current.getData().getPelanggan().getNama() + ";" +
+                            current.getData().getPelanggan().getBerat() + ";" +
+                            current.getData().getLayanan() + "\n");
                 }
-                current = current.next;
+                current = current.getNext();
             }
         } catch (Exception e) {
             System.out.println("Gagal overwrite file: " + e.getMessage());
@@ -173,8 +175,8 @@ public class AntrianMain {
         int count = 0;
 
         while (current != null) {
-            simpanKeFilePerLayanan(current.data);
-            current = current.next;
+            simpanKeFilePerLayanan(current.getData());
+            current = current.getNext();
             count++;
         }
 
