@@ -76,11 +76,10 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("Lihat antrian mana?");
+                    System.out.println("===== MENU LIHAT ANTRIAN =====");
                     System.out.println("1. Reguler");
                     System.out.println("2. Express");
                     System.out.print("Pilih: ");
-                    System.out.println("");
                     int lihatPilihan = sc.nextInt();
                     sc.nextLine();
                     if (lihatPilihan == 1) {
@@ -108,7 +107,6 @@ public class Main {
                                 System.out.println("Ambil antrian mana?");
                                 System.out.println("1. Reguler");
                                 System.out.println("2. Express");
-                                
                                 System.out.print("Pilih: ");
                                 int ambilPilihan = sc.nextInt();
                                 sc.nextLine();
