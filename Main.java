@@ -11,8 +11,8 @@ public class Main {
 
         do {
             System.out.println("\n===== SISTEM ANTRIAN LAUNDRY =====");
-            System.out.println("1. Tambah Antrian");
-            System.out.println("2. Lihat Semua Antrian");
+            System.out.println("1. Menu Tambah Antrian");
+            System.out.println("2. Menu Lihat Semua Antrian");
             System.out.println("3. Ambil Antrian (Dequeue)");
             System.out.println("4. Simpan Antrian ke File");
             System.out.println("0. Keluar");
