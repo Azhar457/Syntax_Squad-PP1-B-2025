@@ -2,7 +2,7 @@ import java.text.SimpleDateFormat;
 import java.io.*;
 
 public class AntrianMain {
-    Node head, tail;
+    public Node head, tail;
 
     // Ilona
     public void enqueue(Antrian data) {
