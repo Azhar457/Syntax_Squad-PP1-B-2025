@@ -13,7 +13,7 @@ public class Main {
             System.out.println("\n===== SISTEM ANTRIAN LAUNDRY =====");
             System.out.println("1. Menu Tambah Antrian");
             System.out.println("2. Menu Lihat Semua Antrian");
-            System.out.println("3. Ambil Antrian (Dequeue)");
+            System.out.println("3. Menu Ambil Antrian");
             System.out.println("4. Simpan Antrian ke File");
             System.out.println("0. Keluar");
             System.out.println("===================================");
@@ -36,6 +36,7 @@ public class Main {
 
                         switch (subPilihan) {
                             case 1:
+                            System.out.println("");
                                 System.out.print("Masukkan nama pelanggan: ");
                                 String nama = sc.nextLine();
 
