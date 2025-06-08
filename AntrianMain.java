@@ -112,7 +112,7 @@ public class AntrianMain {
     }
 
     public void cetakStruk(Antrian data) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         String layanan = data.getLayanan();
         int hargaPerKg = layanan.equalsIgnoreCase("Express") ? 9000 : 6000;

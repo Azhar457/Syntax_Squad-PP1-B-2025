@@ -80,6 +80,7 @@ public class Main {
                     System.out.println("1. Reguler");
                     System.out.println("2. Express");
                     System.out.print("Pilih: ");
+                    System.out.println("");
                     int lihatPilihan = sc.nextInt();
                     sc.nextLine();
                     if (lihatPilihan == 1) {
@@ -95,7 +96,7 @@ public class Main {
                     int subAmbil;
                     do {
                         System.out.println("\n===== MENU AMBIL ANTRIAN =====");
-                        System.out.println("1. Dequeue Antrian");
+                        System.out.println("1. Ambil Antrian");
                         System.out.println("2. Kembali ke Menu Utama");
                         System.out.print("Pilih: ");
                         subAmbil = sc.nextInt();
@@ -107,6 +108,7 @@ public class Main {
                                 System.out.println("Ambil antrian mana?");
                                 System.out.println("1. Reguler");
                                 System.out.println("2. Express");
+                                
                                 System.out.print("Pilih: ");
                                 int ambilPilihan = sc.nextInt();
                                 sc.nextLine();
