@@ -1,13 +1,13 @@
 package src.entity;
+
 import java.util.Date;
 
-public class Antrian { // [NoNota, TglMasuk, TglSelesai, [Nama, berat], Layanan]
+public class Antrian {
     private String noNota;
     private Date tglMasuk;
     private Date tglSelesai;
-    private Pelanggan pelanggan;// [Nama, Berat]
+    private Pelanggan pelanggan;
     private String layanan;
-    // 1 = Reguler, 2 = Express
 
     public Antrian(String noNota, Date tglMasuk, Date tglSelesai, Pelanggan pelanggan, String layanan) {
         this.noNota = noNota;

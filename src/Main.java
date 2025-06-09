@@ -10,8 +10,8 @@ import src.services.AntrianMain;
 
 public class Main {
     public static void main(String[] args) {
-        AntrianMain queue = new AntrianMain();
-        queue.bacaSemuaAntrianDariFile(); // Membaca antrian dari file saat program dimulai
+        AntrianMain antrian = new AntrianMain();
+        antrian.bacaSemuaAntrianDariFile();
         Scanner sc = new Scanner(System.in);
         int pilihan;
 
@@ -26,7 +26,7 @@ public class Main {
             System.out.println("");
             System.out.print("Pilih menu: ");
             pilihan = sc.nextInt();
-            sc.nextLine(); // clear buffer
+            sc.nextLine();
 
             switch (pilihan) {
                 case 1:
@@ -45,32 +45,26 @@ public class Main {
                                 System.out.println("");
                                 System.out.print("Masukkan nama pelanggan: ");
                                 String nama = sc.nextLine();
-
                                 System.out.print("Masukkan berat laundry (kg): ");
                                 double berat = sc.nextDouble();
                                 sc.nextLine();
-
                                 System.out.print("Jenis layanan (1 = Reguler, 2 = Express): ");
                                 int jenis = sc.nextInt();
                                 sc.nextLine();
-
                                 String layanan = (jenis == 2) ? "Express" : "Reguler";
                                 int hariProses = (jenis == 2) ? 1 : 3;
-
                                 Date masuk = new Date();
                                 Date selesai = new Date(masuk.getTime() + hariProses * 24 * 60 * 60 * 1000L);
-
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
                                 String timePart = sdf.format(new Date());
                                 String nota = "TRX/" + timePart;
                                 Pelanggan pelanggan = new Pelanggan(nama, berat);
                                 Antrian baru = new Antrian(nota, masuk, selesai, pelanggan, layanan);
-
-                                queue.enqueue(baru);
+                                antrian.enqueue(baru);
                                 System.out.println("\nData antrian berhasil ditambahkan!");
                                 break;
                             case 2:
-                                queue.simpanSemuaAntrianKeFile();
+                                antrian.simpanSemuaAntrianKeFile();
                                 break;
                             case 3:
                                 System.out.println("Kembali ke menu utama...");
@@ -81,22 +75,22 @@ public class Main {
                     } while (subPilihan != 3);
                     break;
                 case 2:
-                    queue.tampilkanSemua();
+                    antrian.tampilkanSemua();
                     System.out.println("Semua antrian telah ditampilkan.");
                     break;
                 case 3:
-                    Antrian ambil = queue.dequeue();
+                    Antrian ambil = antrian.dequeue();
                     if (ambil != null) {
-                        queue.cetakStruk(ambil);
-                        queue.pindahKeCatatan(ambil); // Tambahkan ke catatan.txt
-                        queue.hapusDariFileAntrian(ambil); // Hapus dari file antrian
+                        antrian.cetakStruk(ambil);
+                        antrian.pindahKeCatatan(ambil);
+                        antrian.hapusDariFileAntrian(ambil);
                         System.out.println("Antrian berhasil diambil");
                     } else {
                         System.out.println("Antrian kosong!");
                     }
                     break;
                 case 4: // Milda
-                    queue.simpanSemuaAntrianKeFile();
+                    antrian.simpanSemuaAntrianKeFile();
                     break;
 
                 case 0:

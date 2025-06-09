@@ -12,7 +12,6 @@ public class AntrianMain {
     private Node headReguler, tailReguler;
     private Node headExpress, tailExpress;
 
-    // Ilona
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
         if (data.getLayanan().equalsIgnoreCase("Express")) {
@@ -32,7 +31,6 @@ public class AntrianMain {
         }
     }
 
-    // Melda
     public Antrian dequeue() {
         if (headExpress != null) {
             Antrian data = headExpress.getData();
@@ -66,7 +64,6 @@ public class AntrianMain {
                 if (parts.length < 6)
                     continue;
                 String noNota = parts[0];
-                // Ubah di sini: parse tanggal dari string
                 java.util.Date tglMasuk = sdf.parse(parts[1]);
                 java.util.Date tglSelesai = sdf.parse(parts[2]);
                 String nama = parts[3];
@@ -76,14 +73,13 @@ public class AntrianMain {
                 Antrian a = new Antrian(noNota, tglMasuk, tglSelesai, p, layanan);
                 enqueue(a);
             }
-    } catch (IOException e) {
-        // File mungkin belum ada, abaikan
-    } catch (Exception e) {
-        System.out.println("Gagal baca file: " + e.getMessage());
+        } catch (IOException e) {
+            // File mungkin belum ada, abaikan
+        } catch (Exception e) {
+            System.out.println("Gagal baca file: " + e.getMessage());
+        }
     }
-}
 
-    // Akmal
     public void tampilkanSemua() {
         System.out.println("=== ANTRIAN EXPRESS ===");
         Node current = headExpress;
@@ -140,10 +136,6 @@ public class AntrianMain {
             System.out.println("Gagal simpan ke file: " + e.getMessage());
         }
     }
-
-    // Azhar
-    // Overwrite file antrian per layanan
-    // Digunakan saat ada perubahan pada antrian
     public void overwriteFilePerLayanan(String layanan) {
         String file = layanan.equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -165,14 +157,12 @@ public class AntrianMain {
         }
     }
 
-    // Menyimpan semua Milda
     public void simpanSemuaAntrianKeFile() {
         overwriteFilePerLayanan("Reguler");
         overwriteFilePerLayanan("Express");
         System.out.println("Semua antrian berhasil disimpan ke file.");
     }
 
-    // Pindahkan ke catatan/history saat dequeue melda
     public void pindahKeCatatan(Antrian data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try (FileWriter fw = new FileWriter("catatan.txt", true)) {
@@ -184,7 +174,6 @@ public class AntrianMain {
         }
     }
 
-    // Hapus dari file antrian setelah dequeue
     public void hapusDariFileAntrian(Antrian data) {
         String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
         try {
