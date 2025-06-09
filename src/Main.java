@@ -19,7 +19,7 @@ public class Main {
             System.out.println("\n===== SISTEM ANTRIAN LAUNDRY =====");
             System.out.println("1. Menu Tambah Antrian");
             System.out.println("2. Menu Lihat Semua Antrian");
-            System.out.println("3. Menu Ambil Antrian");
+            System.out.println("3. Ambil Antrian");
             System.out.println("4. Simpan Antrian ke File");
             System.out.println("0. Keluar");
             System.out.println("===================================");
@@ -80,62 +80,20 @@ public class Main {
                         }
                     } while (subPilihan != 3);
                     break;
-
                 case 2:
-                    System.out.println("===== MENU LIHAT ANTRIAN =====");
-                    System.out.println("1. Reguler");
-                    System.out.println("2. Express");
-                    System.out.print("Pilih: ");
-                    int lihatPilihan = sc.nextInt();
-                    sc.nextLine();
-                    if (lihatPilihan == 1) {
-                        queue.tampilkanAntrianPerLayanan("Reguler");
-                    } else if (lihatPilihan == 2) {
-                        queue.tampilkanAntrianPerLayanan("Express");
-                    } else {
-                        System.out.println("Pilihan tidak valid!");
-                    }
+                    queue.tampilkanSemua();
+                    System.out.println("Semua antrian telah ditampilkan.");
                     break;
-
                 case 3:
-                    int subAmbil;
-                    do {
-                        System.out.println("\n===== MENU AMBIL ANTRIAN =====");
-                        System.out.println("1. Ambil Antrian");
-                        System.out.println("2. Kembali ke Menu Utama");
-                        System.out.print("Pilih: ");
-                        subAmbil = sc.nextInt();
-                        sc.nextLine();
-                        System.out.println("==============================");
-
-                        switch (subAmbil) {
-                            case 1:
-                                System.out.println("Ambil antrian mana?");
-                                System.out.println("1. Reguler");
-                                System.out.println("2. Express");
-                                System.out.print("Pilih: ");
-                                int ambilPilihan = sc.nextInt();
-                                sc.nextLine();
-                                Antrian ambil = null;
-                                if (ambilPilihan == 1) {
-                                    ambil = queue.dequeuePerLayanan("Reguler");
-                                } else if (ambilPilihan == 2) {
-                                    ambil = queue.dequeuePerLayanan("Express");
-                                } else {
-                                    System.out.println("Pilihan tidak valid!");
-                                }
-                                if (ambil != null) {
-                                    queue.cetakStruk(ambil);
-                                    System.out.println("Pesanan berhasil diambil dan dipindahkan ke catatan.");
-                                }
-                                break;
-                            case 2:
-                                System.out.println("Kembali ke menu utama...");
-                                break;
-                            default:
-                                System.out.println("Pilihan tidak valid!");
-                        }
-                    } while (subAmbil != 2);
+                    Antrian ambil = queue.dequeue();
+                    if (ambil != null) {
+                        queue.cetakStruk(ambil);
+                        queue.pindahKeCatatan(ambil); // Tambahkan ke catatan.txt
+                        queue.hapusDariFileAntrian(ambil); // Hapus dari file antrian
+                        System.out.println("Antrian berhasil diambil");
+                    } else {
+                        System.out.println("Antrian kosong!");
+                    }
                     break;
                 case 4: // Milda
                     queue.simpanSemuaAntrianKeFile();

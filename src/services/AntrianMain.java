@@ -1,4 +1,5 @@
 package src.services;
+
 import java.text.SimpleDateFormat;
 
 import src.entity.Antrian;
@@ -8,61 +9,44 @@ import src.entity.Pelanggan;
 import java.io.*;
 
 public class AntrianMain {
-    public Node head, tail;
+    private Node headReguler, tailReguler;
+    private Node headExpress, tailExpress;
 
     // Ilona
     public void enqueue(Antrian data) {
         Node newNode = new Node(data);
-        if (tail == null) {
-            head = tail = newNode;
+        if (data.getLayanan().equalsIgnoreCase("Express")) {
+            if (tailExpress == null) {
+                headExpress = tailExpress = newNode;
+            } else {
+                tailExpress.setNext(newNode);
+                tailExpress = newNode;
+            }
         } else {
-            tail.setNext(newNode);
-            tail = newNode;
+            if (tailReguler == null) {
+                headReguler = tailReguler = newNode;
+            } else {
+                tailReguler.setNext(newNode);
+                tailReguler = newNode;
+            }
         }
     }
 
     // Melda
-    public void tampilkanAntrianPerLayanan(String layanan) {
-        Node current = head;
-        int i = 1;
-        boolean kosong = true;
-        while (current != null) {
-            if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
-                System.out.println(
-                        "[" + i + "] " + current.getData().getPelanggan().getNama() + " - "
-                                + current.getData().getNoNota());
-                kosong = false;
-            }
-            current = current.getNext();
-            i++;
+    public Antrian dequeue() {
+        if (headExpress != null) {
+            Antrian data = headExpress.getData();
+            headExpress = headExpress.getNext();
+            if (headExpress == null)
+                tailExpress = null;
+            return data;
+        } else if (headReguler != null) {
+            Antrian data = headReguler.getData();
+            headReguler = headReguler.getNext();
+            if (headReguler == null)
+                tailReguler = null;
+            return data;
         }
-        if (kosong) {
-            System.out.println("Antrian " + layanan + " kosong.");
-        }
-    }
-
-    public Antrian dequeuePerLayanan(String layanan) {
-        Node current = head, prev = null;
-        while (current != null) {
-            if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
-                Antrian data = current.getData();
-                if (prev == null) { // head
-                    head = current.getNext();
-                    if (head == null)
-                        tail = null;
-                } else {
-                    prev.setNext(current.getNext());
-                    if (current == tail)
-                        tail = prev;
-                }
-                pindahKeCatatan(data);
-                hapusDariFileAntrian(data);
-                return data;
-            }
-            prev = current;
-            current = current.getNext();
-        }
-        System.out.println("Antrian " + layanan + " kosong!");
         return null;
     }
 
@@ -72,46 +56,50 @@ public class AntrianMain {
     }
 
     private void bacaAntrianDariFile(String filename) {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-        String line;
-        while ((line = br.readLine()) != null) {
-            if (line.trim().isEmpty() || line.startsWith("//"))
-                continue;
-            String[] parts = line.split(";");
-            if (parts.length < 6)
-                continue;
-            String noNota = parts[0];
-            // Ubah di sini: parse tanggal dari string
-            java.util.Date tglMasuk = sdf.parse(parts[1]);
-            java.util.Date tglSelesai = sdf.parse(parts[2]);
-            String nama = parts[3];
-            double berat = Double.parseDouble(parts[4]);
-            String layanan = parts[5];
-            Pelanggan p = new Pelanggan(nama, berat);
-            Antrian a = new Antrian(noNota, tglMasuk, tglSelesai, p, layanan);
-            enqueue(a);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty() || line.startsWith("//"))
+                    continue;
+                String[] parts = line.split(";");
+                if (parts.length < 6)
+                    continue;
+                String noNota = parts[0];
+                // Ubah di sini: parse tanggal dari string
+                java.util.Date tglMasuk = sdf.parse(parts[1]);
+                java.util.Date tglSelesai = sdf.parse(parts[2]);
+                String nama = parts[3];
+                double berat = Double.parseDouble(parts[4]);
+                String layanan = parts[5];
+                Pelanggan p = new Pelanggan(nama, berat);
+                Antrian a = new Antrian(noNota, tglMasuk, tglSelesai, p, layanan);
+                enqueue(a);
+            }
+        } catch (IOException e) {
+            // File mungkin belum ada, abaikan
+        } catch (Exception e) {
+            System.out.println("Gagal baca file: " + e.getMessage());
         }
-    } catch (IOException e) {
-        // File mungkin belum ada, abaikan
-    } catch (Exception e) {
-        System.out.println("Gagal baca file: " + e.getMessage());
     }
-}
 
     // Akmal
     public void tampilkanSemua() {
-        if (head == null) {
-            System.out.println("Antrian kosong.");
-            return;
-        }
-
-        Node current = head;
+        System.out.println("=== ANTRIAN EXPRESS ===");
+        Node current = headExpress;
         int i = 1;
         while (current != null) {
-            System.out.println(
-                    "[" + i + "] " + current.getData().getPelanggan().getNama() + " - " + current.getData().getNoNota()
-                            + " - " + current.getData().getLayanan());
+            System.out.println("[" + i + "] " + current.getData().getPelanggan().getNama() + " - "
+                    + current.getData().getNoNota());
+            current = current.getNext();
+            i++;
+        }
+        System.out.println("=== ANTRIAN REGULER ===");
+        current = headReguler;
+        i = 1;
+        while (current != null) {
+            System.out.println("[" + i + "] " + current.getData().getPelanggan().getNama() + " - "
+                    + current.getData().getNoNota());
             current = current.getNext();
             i++;
         }
@@ -138,14 +126,19 @@ public class AntrianMain {
         System.out.println("============================");
     }
 
-    // ini punya ilona
-    // Simpan ke file sesuai layanan
-
-    // Simpan Milda
-
     public void simpanKeFilePerLayanan(Antrian data) {
-        overwriteFilePerLayanan("Reguler");
-        overwriteFilePerLayanan("Express");
+        String file = data.getLayanan().equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try (FileWriter fw = new FileWriter(file, true)) { // true = append
+            fw.write(data.getNoNota() + ";" +
+                    sdf.format(data.getTglMasuk()) + ";" +
+                    sdf.format(data.getTglSelesai()) + ";" +
+                    data.getPelanggan().getNama() + ";" +
+                    data.getPelanggan().getBerat() + ";" +
+                    data.getLayanan() + "\n");
+        } catch (Exception e) {
+            System.out.println("Gagal simpan ke file: " + e.getMessage());
+        }
     }
 
     // Azhar
@@ -155,7 +148,7 @@ public class AntrianMain {
         String file = layanan.equalsIgnoreCase("Express") ? "antrian-express.txt" : "antrian-reguler.txt";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try (FileWriter fw = new FileWriter(file, false)) { // false = overwrite
-            Node current = head;
+            Node current = layanan.equalsIgnoreCase("Express") ? headExpress : headReguler;
             while (current != null) {
                 if (current.getData().getLayanan().equalsIgnoreCase(layanan)) {
                     fw.write(current.getData().getNoNota() + ";" +
@@ -174,21 +167,9 @@ public class AntrianMain {
 
     // Menyimpan semua Milda
     public void simpanSemuaAntrianKeFile() {
-        if (head == null) {
-            System.out.println("Tidak ada antrian untuk disimpan.");
-            return;
-        }
-
-        Node current = head;
-        int count = 0;
-
-        while (current != null) {
-            simpanKeFilePerLayanan(current.getData());
-            current = current.getNext();
-            count++;
-        }
-
-        System.out.println(count + " antrian berhasil disimpan ke file.");
+        overwriteFilePerLayanan("Reguler");
+        overwriteFilePerLayanan("Express");
+        System.out.println("Semua antrian berhasil disimpan ke file.");
     }
 
     // Pindahkan ke catatan/history saat dequeue melda
