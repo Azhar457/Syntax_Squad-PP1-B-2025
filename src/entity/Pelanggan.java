@@ -1,3 +1,4 @@
+package src.entity;
 public class Pelanggan {
     private String nama;
     private double berat;

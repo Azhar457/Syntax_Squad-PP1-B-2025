@@ -1,3 +1,4 @@
+package src.entity;
 import java.util.Date;
 
 public class Antrian { // [NoNota, TglMasuk, TglSelesai, [Nama, berat], Layanan]
