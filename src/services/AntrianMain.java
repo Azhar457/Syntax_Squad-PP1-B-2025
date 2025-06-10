@@ -103,12 +103,10 @@ public class AntrianMain {
 
     public void cetakStruk(Antrian data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
         String layanan = data.getLayanan();
         int hargaPerKg = layanan.equalsIgnoreCase("Express") ? 9000 : 6000;
         double berat = data.getPelanggan().getBerat();
         int total = (int) (berat * hargaPerKg);
-
         System.out.println("========== STRUK ==========");
         System.out.println("No Nota     : " + data.getNoNota());
         System.out.println("Pelanggan   : " + data.getPelanggan().getNama());

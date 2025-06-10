@@ -89,7 +89,7 @@ public class Main {
                         System.out.println("Antrian kosong!");
                     }
                     break;
-                case 4: // Milda
+                case 4:
                     antrian.simpanSemuaAntrianKeFile();
                     break;
 
